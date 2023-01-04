@@ -74,6 +74,17 @@ button:hover{
     cursor:grab;
 }
 
+/* * Setup the canvas */
+#canvas1{
+    display: none;
+    position:absolute;
+    background: black;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+}
+
 
 
 
