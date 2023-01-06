@@ -1,14 +1,24 @@
 export class mouseParticles {
-    constructor(mouse){
-        this.x = mouse.x;
-        this.y = mouse.y;
+    constructor(pos,hue){
+        this.x = pos.x;
+        this.y = pos.y;
+        this.size = Math.random()*5+1;
+        this.speedX = Math.random()*3-2;
+        this.speedY = Math.random()*3-2;
+        this.color = 'hsl(' + hue + ',100%,50%)'
+    }
+    update(){
+        // add to speed
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        // reduce size
+        this.size -= 0.1;
     }
     draw(ctx){
-        ctx.fillStyle = 'yellow';
+        ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x,this.y,5,0,Math.PI*2);
-        console.log("IN LOOP",this.x,this.y);
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
         ctx.fill();
-
     }
 }
