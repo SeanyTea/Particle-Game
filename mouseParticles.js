@@ -4,11 +4,11 @@ export class mouseParticles {
         this.y = mouse.y;
     }
     draw(ctx){
-        ctx.strokeStyle = 'white';
+        ctx.fillStyle = 'yellow';
         ctx.beginPath();
-        ctx.moveTo(this.x,this.y);
-        ctx.lineTo(this.x+50,this.y+50);
-        ctx.stroke();
+        ctx.arc(this.x,this.y,5,0,Math.PI*2);
+        console.log("IN LOOP",this.x,this.y);
+        ctx.fill();
 
     }
 }

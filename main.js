@@ -6,14 +6,32 @@ window.addEventListener('load',function(){
     const buttonBox = document.getElementById('buttonBox');
     const howToButton = document.getElementById('howToButton');
     const playGameButton = document.getElementById('startButton');
+    const canvas = document.getElementById('canvas1');
+    const ctx = canvas.getContext('2d');
+    
 
+    const mouseParticleArray = [];
+    let mouse = {
+        x:null,
+        y:null,
+    }
+    let gameToggle = 0;
     // * Implements buttons
 
     playGameButton.addEventListener('click', function(){
         console.log('Start game!')
         startScreen.style.display = 'none';
-        const gameLoop = new Game;
-        gameLoop.startGame();
+        handleStart();
+        
+    })
+    canvas.addEventListener('mousemove',function(e){
+        mouse.x = e.x;
+        mouse.y = e.y;
+        // Add a particle to array
+        console.log(mouse.x,mouse.y);
+        mouseParticleArray.push(new mouseParticles(mouse));
+        j++;
+
     })
     // ! Implement a "How to play" page
     howToButton.addEventListener('click',function(){
@@ -21,40 +39,26 @@ window.addEventListener('load',function(){
     })
     // ! Implement a "High Score" page
 
+
     // ! Implement "Play Game" functionality
-})
+    // Create a function to handle start.
 
-class Game {
-    constructor(){
-        this.mouseParticleArray = [];
-        this.mouse = {
-            x: null,
-            y: null,
+    function handleStart(){
+        canvas.style.display = 'block';
+        mouseParticleArray.push(new mouseParticles(mouse));
+        animate();
+    }
+    //create an animate function
+    let j = 0;
+    function animate(){
+        for (let i = 0; i < mouseParticleArray.length;i++){
+            mouseParticleArray[i].draw(ctx);
         }
-        this.ctx = null;
-    }
-    drawCanvas(){
-        this.canvas = document.getElementById('canvas1');
-        this.ctx = this.canvas.getContext('2d');
-        this.canvas.style.display = 'block';
-        
-    }
+        requestAnimationFrame(animate)
 
-    startGame(){
-        this.drawCanvas();
-        this.animate();
-    }
-
-    animate(){
-        this.canvas.addEventListener('mousemove',function(e){
-            this.mouse.x = e.x;
-            this.mouse.y = e.y;
-            for (let i = 0; i<5;i++){
-                this.mouseParticleArray.push(new mouseParticles)
-            }
-            console.log(this.mouseParticleArray.length)
-        })
-        requestAnimationFrame(animate);
     }
     
-}
+
+})
+
+
