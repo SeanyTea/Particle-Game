@@ -43,7 +43,7 @@
     content: '';
     width: 50%;
     height: 150%;
-    background: linear-gradient(#9500ff,#fa19de);
+    background: linear-gradient(rgb(121, 194, 243),rgb(255, 180, 239));
     position:absolute;
     animation: animate 4s linear infinite ;
 
@@ -57,7 +57,7 @@
 }
 
 button{
-    background: linear-gradient(to right, #9500ff 0%, #fa19de 51%, #9500ff 100%);
+    background: linear-gradient(to right, rgb(121, 194, 243) 0%, rgb(255, 180, 239) 51%);
     height: 60px;
     width: 200px;
     font-size: 30px;

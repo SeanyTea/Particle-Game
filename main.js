@@ -1,6 +1,7 @@
 import {mouseParticles} from './mouseParticles.js';
 import { bulletParticles } from './bulletParticles.js';
 import { objectiveParticles } from './objectiveParticles.js';
+import { enemyParticles } from './enemyParticles.js';
 window.addEventListener('load',function(){
     // * Get elements for start screen
     const startScreen = this.document.getElementById('startScreen');
@@ -13,6 +14,8 @@ window.addEventListener('load',function(){
 
     const mouseParticleArray = [];
     const bulletParticleArray = [];
+    const objectiveParticleArray= [];
+    const enemyParticleArray = [];
     let mouse = {
         x:null,
         y:null,
@@ -40,7 +43,7 @@ window.addEventListener('load',function(){
     })
     window.addEventListener('keypress', function(e){
         for (let i = 0; i < 50; i++){
-            bulletParticleArray.push(new bulletParticles(mouse))
+            bulletParticleArray.push(new bulletParticles(mouse.x,mouse.y))
         }
     })
     // ! Implement a "How to play" page
@@ -85,15 +88,60 @@ window.addEventListener('load',function(){
             }
         }
     }
+    function handleObjectiveParticles(){
+        for (let i = 0; i < objectiveParticleArray.length; i++){
+            let objective = objectiveParticleArray[i]
+            objective.update();
+            objective.draw(ctx);
+
+            // * check if there is a mouse collision
+
+            if (mouse.x <= objective.x || mouse.x >= objective.x+objective.size || mouse.y <= objective.y || mouse.y >= objective.y+objective.size){
+                continue;
+            }
+            objectiveParticleArray.splice(i,1)
+            i--;
+            for (let i = 0; i < 50; i++){
+                bulletParticleArray.push(new bulletParticles(objective.x,objective.y));
+            }
+        }
+    }
+
+    function handleEnemyParticles(){
+        for (let i = 0; i < enemyParticleArray.length;i++){
+            const enemy = enemyParticleArray[i];
+            enemy.update(mouse);
+            ctx.save();
+            enemy.draw(ctx);
+            for (let j = 0; j < bulletParticleArray.length;j++){
+                const isPointInPath = ctx.isPointInPath(enemy.sprite,bulletParticleArray[j].x,bulletParticleArray[j].y);
+                if (isPointInPath == true){
+                    console.log('yes')
+                    enemyParticleArray.splice(i,1);
+                    i--;
+                    break; 
+                    }
+                }
+            ctx.restore();
+
+            }
+        }
+    
 
 
     // * Animations
     let frame = 0;
     function animate(){
         // Clear the screen at each iteration
+        if (frame%250 == 0){
+            objectiveParticleArray.push(new objectiveParticles(canvas));
+            enemyParticleArray.push(new enemyParticles(canvas));
+        }
         ctx.clearRect(0,0,canvas.width,canvas.height);
         handleMouseParticles();
         handleBulletParticles();
+        handleObjectiveParticles();
+        handleEnemyParticles();
         frame++;
         requestAnimationFrame(animate)
 
